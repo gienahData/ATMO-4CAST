@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/EnergyconsumptionMJkm_1.js"></script>
+        <script src="data/Nitrogenoxidesgkm_2.js"></script>
+        <script src="data/Sulphurdioxidegkm_3.js"></script>
+        <script src="data/Nonmethanevolatileorganiccompoundgkm_4.js"></script>
+        <script src="data/Carbonmonoxidegkm_5.js"></script>
+        <script src="data/Carbondioxideemissiongkm_6.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'feet',
+            secondaryLengthUnit: 'miles',
+            primaryAreaUnit: 'sqfeet',
+            secondaryAreaUnit: 'sqmiles'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_ESRIGraylight_0');
+        map.getPane('pane_ESRIGraylight_0').style.zIndex = 400;
+        var layer_ESRIGraylight_0 = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_ESRIGraylight_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_ESRIGraylight_0;
+        map.addLayer(layer_ESRIGraylight_0);
+        function pop_EnergyconsumptionMJkm_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ENERGY_MJ_</th>\
+                        <td>' + (feature.properties['ENERGY_MJ_'] !== null ? autolinker.link(feature.properties['ENERGY_MJ_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_EnergyconsumptionMJkm_1_0(feature) {
+            if (feature.properties['ENERGY_MJ_'] >= 136200.000000 && feature.properties['ENERGY_MJ_'] <= 180160.000000 ) {
+                return {
+                pane: 'pane_EnergyconsumptionMJkm_1',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,136,232,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ENERGY_MJ_'] >= 180160.000000 && feature.properties['ENERGY_MJ_'] <= 224120.000000 ) {
+                return {
+                pane: 'pane_EnergyconsumptionMJkm_1',
+                radius: 17.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,136,232,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ENERGY_MJ_'] >= 224120.000000 && feature.properties['ENERGY_MJ_'] <= 268080.000000 ) {
+                return {
+                pane: 'pane_EnergyconsumptionMJkm_1',
+                radius: 25.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,136,232,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ENERGY_MJ_'] >= 268080.000000 && feature.properties['ENERGY_MJ_'] <= 312040.000000 ) {
+                return {
+                pane: 'pane_EnergyconsumptionMJkm_1',
+                radius: 32.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,136,232,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['ENERGY_MJ_'] >= 312040.000000 && feature.properties['ENERGY_MJ_'] <= 356000.000000 ) {
+                return {
+                pane: 'pane_EnergyconsumptionMJkm_1',
+                radius: 40.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,136,232,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_EnergyconsumptionMJkm_1');
+        map.getPane('pane_EnergyconsumptionMJkm_1').style.zIndex = 401;
+        map.getPane('pane_EnergyconsumptionMJkm_1').style['mix-blend-mode'] = 'normal';
+        var layer_EnergyconsumptionMJkm_1 = new L.geoJson(json_EnergyconsumptionMJkm_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_EnergyconsumptionMJkm_1',
+            layerName: 'layer_EnergyconsumptionMJkm_1',
+            pane: 'pane_EnergyconsumptionMJkm_1',
+            onEachFeature: pop_EnergyconsumptionMJkm_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_EnergyconsumptionMJkm_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_EnergyconsumptionMJkm_1);
+        map.addLayer(layer_EnergyconsumptionMJkm_1);
+        function pop_Nitrogenoxidesgkm_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NOx_g_km_</th>\
+                        <td>' + (feature.properties['NOx_g_km_'] !== null ? autolinker.link(feature.properties['NOx_g_km_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Nitrogenoxidesgkm_2_0(feature) {
+            if (feature.properties['NOx_g_km_'] >= 19450.000000 && feature.properties['NOx_g_km_'] <= 30810.000000 ) {
+                return {
+                pane: 'pane_Nitrogenoxidesgkm_2',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,241,111,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NOx_g_km_'] >= 30810.000000 && feature.properties['NOx_g_km_'] <= 42170.000000 ) {
+                return {
+                pane: 'pane_Nitrogenoxidesgkm_2',
+                radius: 17.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,241,111,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NOx_g_km_'] >= 42170.000000 && feature.properties['NOx_g_km_'] <= 53530.000000 ) {
+                return {
+                pane: 'pane_Nitrogenoxidesgkm_2',
+                radius: 25.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,241,111,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NOx_g_km_'] >= 53530.000000 && feature.properties['NOx_g_km_'] <= 64890.000000 ) {
+                return {
+                pane: 'pane_Nitrogenoxidesgkm_2',
+                radius: 32.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,241,111,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NOx_g_km_'] >= 64890.000000 && feature.properties['NOx_g_km_'] <= 76250.000000 ) {
+                return {
+                pane: 'pane_Nitrogenoxidesgkm_2',
+                radius: 40.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,241,111,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Nitrogenoxidesgkm_2');
+        map.getPane('pane_Nitrogenoxidesgkm_2').style.zIndex = 402;
+        map.getPane('pane_Nitrogenoxidesgkm_2').style['mix-blend-mode'] = 'normal';
+        var layer_Nitrogenoxidesgkm_2 = new L.geoJson(json_Nitrogenoxidesgkm_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Nitrogenoxidesgkm_2',
+            layerName: 'layer_Nitrogenoxidesgkm_2',
+            pane: 'pane_Nitrogenoxidesgkm_2',
+            onEachFeature: pop_Nitrogenoxidesgkm_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Nitrogenoxidesgkm_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Nitrogenoxidesgkm_2);
+        map.addLayer(layer_Nitrogenoxidesgkm_2);
+        function pop_Sulphurdioxidegkm_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SO2_g_km_</th>\
+                        <td>' + (feature.properties['SO2_g_km_'] !== null ? autolinker.link(feature.properties['SO2_g_km_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Sulphurdioxidegkm_3_0(feature) {
+            if (feature.properties['SO2_g_km_'] >= 41.500000 && feature.properties['SO2_g_km_'] <= 54.460000 ) {
+                return {
+                pane: 'pane_Sulphurdioxidegkm_3',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,117,229,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['SO2_g_km_'] >= 54.460000 && feature.properties['SO2_g_km_'] <= 67.420000 ) {
+                return {
+                pane: 'pane_Sulphurdioxidegkm_3',
+                radius: 17.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,117,229,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['SO2_g_km_'] >= 67.420000 && feature.properties['SO2_g_km_'] <= 80.380000 ) {
+                return {
+                pane: 'pane_Sulphurdioxidegkm_3',
+                radius: 25.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,117,229,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['SO2_g_km_'] >= 80.380000 && feature.properties['SO2_g_km_'] <= 93.340000 ) {
+                return {
+                pane: 'pane_Sulphurdioxidegkm_3',
+                radius: 32.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,117,229,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['SO2_g_km_'] >= 93.340000 && feature.properties['SO2_g_km_'] <= 106.300000 ) {
+                return {
+                pane: 'pane_Sulphurdioxidegkm_3',
+                radius: 40.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,117,229,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Sulphurdioxidegkm_3');
+        map.getPane('pane_Sulphurdioxidegkm_3').style.zIndex = 403;
+        map.getPane('pane_Sulphurdioxidegkm_3').style['mix-blend-mode'] = 'normal';
+        var layer_Sulphurdioxidegkm_3 = new L.geoJson(json_Sulphurdioxidegkm_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sulphurdioxidegkm_3',
+            layerName: 'layer_Sulphurdioxidegkm_3',
+            pane: 'pane_Sulphurdioxidegkm_3',
+            onEachFeature: pop_Sulphurdioxidegkm_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Sulphurdioxidegkm_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Sulphurdioxidegkm_3);
+        map.addLayer(layer_Sulphurdioxidegkm_3);
+        function pop_Nonmethanevolatileorganiccompoundgkm_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NMVOC_g_km</th>\
+                        <td>' + (feature.properties['NMVOC_g_km'] !== null ? autolinker.link(feature.properties['NMVOC_g_km'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Nonmethanevolatileorganiccompoundgkm_4_0(feature) {
+            if (feature.properties['NMVOC_g_km'] >= 990.100000 && feature.properties['NMVOC_g_km'] <= 1249.280000 ) {
+                return {
+                pane: 'pane_Nonmethanevolatileorganiccompoundgkm_4',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,237,247,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NMVOC_g_km'] >= 1249.280000 && feature.properties['NMVOC_g_km'] <= 1508.460000 ) {
+                return {
+                pane: 'pane_Nonmethanevolatileorganiccompoundgkm_4',
+                radius: 17.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,237,247,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NMVOC_g_km'] >= 1508.460000 && feature.properties['NMVOC_g_km'] <= 1767.640000 ) {
+                return {
+                pane: 'pane_Nonmethanevolatileorganiccompoundgkm_4',
+                radius: 25.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,237,247,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NMVOC_g_km'] >= 1767.640000 && feature.properties['NMVOC_g_km'] <= 2026.820000 ) {
+                return {
+                pane: 'pane_Nonmethanevolatileorganiccompoundgkm_4',
+                radius: 32.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,237,247,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['NMVOC_g_km'] >= 2026.820000 && feature.properties['NMVOC_g_km'] <= 2286.000000 ) {
+                return {
+                pane: 'pane_Nonmethanevolatileorganiccompoundgkm_4',
+                radius: 40.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,237,247,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Nonmethanevolatileorganiccompoundgkm_4');
+        map.getPane('pane_Nonmethanevolatileorganiccompoundgkm_4').style.zIndex = 404;
+        map.getPane('pane_Nonmethanevolatileorganiccompoundgkm_4').style['mix-blend-mode'] = 'normal';
+        var layer_Nonmethanevolatileorganiccompoundgkm_4 = new L.geoJson(json_Nonmethanevolatileorganiccompoundgkm_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Nonmethanevolatileorganiccompoundgkm_4',
+            layerName: 'layer_Nonmethanevolatileorganiccompoundgkm_4',
+            pane: 'pane_Nonmethanevolatileorganiccompoundgkm_4',
+            onEachFeature: pop_Nonmethanevolatileorganiccompoundgkm_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Nonmethanevolatileorganiccompoundgkm_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Nonmethanevolatileorganiccompoundgkm_4);
+        map.addLayer(layer_Nonmethanevolatileorganiccompoundgkm_4);
+        function pop_Carbonmonoxidegkm_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CO_g_km_</th>\
+                        <td>' + (feature.properties['CO_g_km_'] !== null ? autolinker.link(feature.properties['CO_g_km_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Carbonmonoxidegkm_5_0(feature) {
+            if (feature.properties['CO_g_km_'] >= 24080.000000 && feature.properties['CO_g_km_'] <= 29990.000000 ) {
+                return {
+                pane: 'pane_Carbonmonoxidegkm_5',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO_g_km_'] >= 29990.000000 && feature.properties['CO_g_km_'] <= 35900.000000 ) {
+                return {
+                pane: 'pane_Carbonmonoxidegkm_5',
+                radius: 17.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO_g_km_'] >= 35900.000000 && feature.properties['CO_g_km_'] <= 41810.000000 ) {
+                return {
+                pane: 'pane_Carbonmonoxidegkm_5',
+                radius: 25.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO_g_km_'] >= 41810.000000 && feature.properties['CO_g_km_'] <= 47720.000000 ) {
+                return {
+                pane: 'pane_Carbonmonoxidegkm_5',
+                radius: 32.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO_g_km_'] >= 47720.000000 && feature.properties['CO_g_km_'] <= 53630.000000 ) {
+                return {
+                pane: 'pane_Carbonmonoxidegkm_5',
+                radius: 40.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Carbonmonoxidegkm_5');
+        map.getPane('pane_Carbonmonoxidegkm_5').style.zIndex = 405;
+        map.getPane('pane_Carbonmonoxidegkm_5').style['mix-blend-mode'] = 'normal';
+        var layer_Carbonmonoxidegkm_5 = new L.geoJson(json_Carbonmonoxidegkm_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Carbonmonoxidegkm_5',
+            layerName: 'layer_Carbonmonoxidegkm_5',
+            pane: 'pane_Carbonmonoxidegkm_5',
+            onEachFeature: pop_Carbonmonoxidegkm_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Carbonmonoxidegkm_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Carbonmonoxidegkm_5);
+        map.addLayer(layer_Carbonmonoxidegkm_5);
+        function pop_Carbondioxideemissiongkm_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CO2_g_km_</th>\
+                        <td>' + (feature.properties['CO2_g_km_'] !== null ? autolinker.link(feature.properties['CO2_g_km_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Carbondioxideemissiongkm_6_0(feature) {
+            if (feature.properties['CO2_g_km_'] >= 10140000.000000 && feature.properties['CO2_g_km_'] <= 14250000.000000 ) {
+                return {
+                pane: 'pane_Carbondioxideemissiongkm_6',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,154,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO2_g_km_'] >= 14250000.000000 && feature.properties['CO2_g_km_'] <= 18360000.000000 ) {
+                return {
+                pane: 'pane_Carbondioxideemissiongkm_6',
+                radius: 17.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,154,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO2_g_km_'] >= 18360000.000000 && feature.properties['CO2_g_km_'] <= 22470000.000000 ) {
+                return {
+                pane: 'pane_Carbondioxideemissiongkm_6',
+                radius: 25.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,154,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO2_g_km_'] >= 22470000.000000 && feature.properties['CO2_g_km_'] <= 26580000.000000 ) {
+                return {
+                pane: 'pane_Carbondioxideemissiongkm_6',
+                radius: 32.5,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,154,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['CO2_g_km_'] >= 26580000.000000 && feature.properties['CO2_g_km_'] <= 30690000.000000 ) {
+                return {
+                pane: 'pane_Carbondioxideemissiongkm_6',
+                radius: 40.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,154,153,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Carbondioxideemissiongkm_6');
+        map.getPane('pane_Carbondioxideemissiongkm_6').style.zIndex = 406;
+        map.getPane('pane_Carbondioxideemissiongkm_6').style['mix-blend-mode'] = 'normal';
+        var layer_Carbondioxideemissiongkm_6 = new L.geoJson(json_Carbondioxideemissiongkm_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Carbondioxideemissiongkm_6',
+            layerName: 'layer_Carbondioxideemissiongkm_6',
+            pane: 'pane_Carbondioxideemissiongkm_6',
+            onEachFeature: pop_Carbondioxideemissiongkm_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Carbondioxideemissiongkm_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Carbondioxideemissiongkm_6);
+        map.addLayer(layer_Carbondioxideemissiongkm_6);
+        map.createPane('pane_GoogleTraffic_7');
+        map.getPane('pane_GoogleTraffic_7').style.zIndex = 407;
+        var layer_GoogleTraffic_7 = L.tileLayer('https://mt1.google.com/vt?lyrs=h@159000000,traffic|seconds_into_week:-1&style=3&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleTraffic_7',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleTraffic_7;
+        map.addLayer(layer_GoogleTraffic_7);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{"Google Traffic": layer_GoogleTraffic_7,'Carbon dioxide emission (g/km)<br /><table><tr><td style="text-align: center;"><img src="legend/Carbondioxideemissiongkm_6_10140000142500000.png" /></td><td>10140000 - 14250000</td></tr><tr><td style="text-align: center;"><img src="legend/Carbondioxideemissiongkm_6_14250000183600001.png" /></td><td>14250000 - 18360000</td></tr><tr><td style="text-align: center;"><img src="legend/Carbondioxideemissiongkm_6_18360000224700002.png" /></td><td>18360000 - 22470000</td></tr><tr><td style="text-align: center;"><img src="legend/Carbondioxideemissiongkm_6_22470000265800003.png" /></td><td>22470000 - 26580000</td></tr><tr><td style="text-align: center;"><img src="legend/Carbondioxideemissiongkm_6_26580000306900004.png" /></td><td>26580000 - 30690000</td></tr></table>': layer_Carbondioxideemissiongkm_6,'Carbon monoxide (g/km)<br /><table><tr><td style="text-align: center;"><img src="legend/Carbonmonoxidegkm_5_24080299900.png" /></td><td>24080 - 29990</td></tr><tr><td style="text-align: center;"><img src="legend/Carbonmonoxidegkm_5_29990359001.png" /></td><td>29990 - 35900</td></tr><tr><td style="text-align: center;"><img src="legend/Carbonmonoxidegkm_5_35900418102.png" /></td><td>35900 - 41810</td></tr><tr><td style="text-align: center;"><img src="legend/Carbonmonoxidegkm_5_41810477203.png" /></td><td>41810 - 47720</td></tr><tr><td style="text-align: center;"><img src="legend/Carbonmonoxidegkm_5_47720536304.png" /></td><td>47720 - 53630</td></tr></table>': layer_Carbonmonoxidegkm_5,'Non-methane volatile organic compound (g/km)<br /><table><tr><td style="text-align: center;"><img src="legend/Nonmethanevolatileorganiccompoundgkm_4_99012490.png" /></td><td>990 - 1249</td></tr><tr><td style="text-align: center;"><img src="legend/Nonmethanevolatileorganiccompoundgkm_4_124915081.png" /></td><td>1249 - 1508</td></tr><tr><td style="text-align: center;"><img src="legend/Nonmethanevolatileorganiccompoundgkm_4_150817682.png" /></td><td>1508 - 1768</td></tr><tr><td style="text-align: center;"><img src="legend/Nonmethanevolatileorganiccompoundgkm_4_176820273.png" /></td><td>1768 - 2027</td></tr><tr><td style="text-align: center;"><img src="legend/Nonmethanevolatileorganiccompoundgkm_4_202722864.png" /></td><td>2027 - 2286</td></tr></table>': layer_Nonmethanevolatileorganiccompoundgkm_4,'Sulphur dioxide (g/km)<br /><table><tr><td style="text-align: center;"><img src="legend/Sulphurdioxidegkm_3_42540.png" /></td><td>42 - 54</td></tr><tr><td style="text-align: center;"><img src="legend/Sulphurdioxidegkm_3_54671.png" /></td><td>54 - 67</td></tr><tr><td style="text-align: center;"><img src="legend/Sulphurdioxidegkm_3_67802.png" /></td><td>67 - 80</td></tr><tr><td style="text-align: center;"><img src="legend/Sulphurdioxidegkm_3_80933.png" /></td><td>80 - 93</td></tr><tr><td style="text-align: center;"><img src="legend/Sulphurdioxidegkm_3_931064.png" /></td><td>93 - 106</td></tr></table>': layer_Sulphurdioxidegkm_3,'Nitrogen oxides (g/km)<br /><table><tr><td style="text-align: center;"><img src="legend/Nitrogenoxidesgkm_2_19450308100.png" /></td><td>19450 - 30810</td></tr><tr><td style="text-align: center;"><img src="legend/Nitrogenoxidesgkm_2_30810421701.png" /></td><td>30810 - 42170</td></tr><tr><td style="text-align: center;"><img src="legend/Nitrogenoxidesgkm_2_42170535302.png" /></td><td>42170 - 53530</td></tr><tr><td style="text-align: center;"><img src="legend/Nitrogenoxidesgkm_2_53530648903.png" /></td><td>53530 - 64890</td></tr><tr><td style="text-align: center;"><img src="legend/Nitrogenoxidesgkm_2_64890762504.png" /></td><td>64890 - 76250</td></tr></table>': layer_Nitrogenoxidesgkm_2,'Energy consumption (MJ/km)<br /><table><tr><td style="text-align: center;"><img src="legend/EnergyconsumptionMJkm_1_1362001801600.png" /></td><td>136200 - 180160</td></tr><tr><td style="text-align: center;"><img src="legend/EnergyconsumptionMJkm_1_1801602241201.png" /></td><td>180160 - 224120</td></tr><tr><td style="text-align: center;"><img src="legend/EnergyconsumptionMJkm_1_2241202680802.png" /></td><td>224120 - 268080</td></tr><tr><td style="text-align: center;"><img src="legend/EnergyconsumptionMJkm_1_2680803120403.png" /></td><td>268080 - 312040</td></tr><tr><td style="text-align: center;"><img src="legend/EnergyconsumptionMJkm_1_3120403560004.png" /></td><td>312040 - 356000</td></tr></table>': layer_EnergyconsumptionMJkm_1,"ESRI Gray (light)": layer_ESRIGraylight_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
