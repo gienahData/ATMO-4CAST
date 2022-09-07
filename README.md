@@ -1,7 +1,7 @@
 # ATMO-4CAST
  Emission simulation based on average daily traffic, M0 bypass motorway, Budapest, Hungary, 2021
  
- https://gienahdata.github.io/ATMO-4CAST/#11/47.4959/19.1293
+ https://gienahdata.github.io/ATMO-4CAST/
  
  ![emission simulation](https://user-images.githubusercontent.com/56297706/188915115-38e9f101-d244-429f-b63e-7398f0ac5d11.png)
 
