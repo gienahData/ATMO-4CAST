@@ -30,8 +30,11 @@ The current case study involves data from 22 automated counting stations along t
 2. Calculation of vehicle fleet data 
 
 The vehicle fleet data comes from the latest UNECE Statistical Database published for 2019. 
+
 https://w3.unece.org/PXWeb2015/pxweb/en/STAT/ 
+
 Road vehicle fleet at 31 December by Vehicle Category and Age Group
+
 Road Vehicle Fleet at 31 December by Fuel Type, Type of Vehicle, Country and Year
 
 
