@@ -38,13 +38,17 @@ Road Vehicle Fleet at 31 December by Fuel Type, Type of Vehicle, Country and Yea
 3. Emission simulation 
 
 The method is thoroughly described at https://docs.neanias.eu/projects/a3-service/en/latest/emissions.html 
+
 “The ATMO-4CAST emission calculation is based on the QTraffic model. The QTraffic model is a mesoscopic average speed emission model especially designed for road traffic emission estimations at local/urban scale. This model has been developed by the University of Coimbra and applied for urban scale modelling (Dias et al., 2019). The model is based on the updated European guidelines for emission factors and the emissions (in g.km-1) are calculated individually for each road segment based on the following data.
+
 The Qtraffic model distinguishes several vehicle categories basing on the transportation categories (Passenger Cars - PC; Light Duty Vehicles - LDV; Heavy Duty Vehicles - HDV; Urban Busses and Coaches; Motorcycles) and fuel used (Diesel, Gasoline, LPG, Hybrids or New fuel). Moreover, the estimation of emissions is given by different vehicle classes (Conventional, PreEuro, Euro1-6) and engine capacities.
+
 As output, QTraffic provides road traffic emissions for several pollutants, including:
 -	ozone precursors (nitrogen oxides (NOx), non-methane volatile organic compounds (NMVOC), carbon monoxide (CO);
 -	Greenhouse gases (carbon dioxide (CO2), methane (CH4), nitrous oxide (N2O));
 -	Acidifying substances (sulphur dioxide (SO2), ammonia (NH3));
 -	Particulate matter (PM1, PM2.5; PM10; exhaust and non-exhaust emissions);
 -	Carcinogenic species (benzene (C6H6)).”
+
 ATMO-4CAST emission simulation service is available at https://atmo-4cast.neanias.eu/emissions/new/ 
 
